@@ -1,6 +1,6 @@
-from unittest import TestCase
-from models import Person, Name, Address, email_from_name, build_person
+from wrapplescript.models import Person, Name, Address, email_from_name, build_person
 from pyrsistent import InvariantException
+import pytest
 
 
 JVN_NAME = Name(
@@ -24,47 +24,47 @@ CALIFORNIA_ADDRESS = Address(
 EMAIL = 'John.von.Neumann@example.com'
 
 
-class TestName(TestCase):
+class TestName(object):
     
     def test_full_name(self):
-        self.assertEqual(JVN_NAME.first, 'John')
-        self.assertEqual(JVN_NAME.last, 'von Neumann')
-        self.assertEqual(JVN_NAME.full, 'John von Neumann')
+        assert JVN_NAME.first == 'John'
+        assert JVN_NAME.last == 'von Neumann'
+        assert JVN_NAME.full == 'John von Neumann'
 
 
-class TestEmail(TestCase):
+class TestEmail(object):
 
     def test_fails_on_invalid_emails(self):
-        with self.assertRaises(InvariantException):
+        with pytest.raises(InvariantException):
             Person(email='no@tld')
 
     def test_build_email_from_name(self):
         email = email_from_name(JVN_NAME, domain='example.com')
-        self.assertEqual(email, 'John.von.Neumann@example.com')
+        assert email ==  'John.von.Neumann@example.com'
 
     def test_build_email_from_name_with_modifier(self):
         email = email_from_name(JVN_NAME,
                                 modifier='functional',
                                 domain='gmail.com')
-        self.assertEqual(email, 'functional.John.von.Neumann@gmail.com')
+        assert email == 'functional.John.von.Neumann@gmail.com'
 
 
-class TestPerson(TestCase):
+class TestPerson(object):
 
     def test_build_person(self):
         person = build_person(JVN_NAME, email=EMAIL)
-        self.assertEqual(person.email, EMAIL)
+        assert person.email == EMAIL
 
     def test_build_person_no_email(self):
         person = build_person(JVN_NAME)
-        self.assertEqual(person, JVN_PERSON)
-        self.assertIsNone(person.email)
+        assert person == JVN_PERSON
+        assert person.email is None
 
     def test_build_person_from_name(self):
         person = Person.from_name(JVN_NAME, email_from_name)
-        self.assertEqual(person, build_person(JVN_NAME, email=EMAIL))
+        assert person == build_person(JVN_NAME, email=EMAIL)
 
     def test_build_person_from_name_with_args(self):
         person = Person.from_name(JVN_NAME, email_from_name, domain='gmail.com')
         email = 'John.von.Neumann@gmail.com'
-        self.assertEqual(person, build_person(JVN_NAME, email=email))
+        assert person == build_person(JVN_NAME, email=email)

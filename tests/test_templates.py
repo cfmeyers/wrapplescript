@@ -1,5 +1,4 @@
-from unittest import TestCase
-from template import get_raw_template, make_template
+from wrapplescript.template import get_raw_template, make_template
 
 
 SIMPLE = """This is
@@ -14,17 +13,16 @@ COMPLEX = """inputEmail = function () {
 PATH_TO_SIMPLE = 'tests/fixtures/simple.applescript'
 PATH_TO_COMPLEX = 'tests/fixtures/complex.applescript'
 
-
-class TestTemplates(TestCase):
+class TestTemplates(object):
 
     def test_get_raw_template_reads_in_template_from_path(self):
         raw_template = get_raw_template(PATH_TO_SIMPLE)
-        self.assertEqual(raw_template, SIMPLE)
+        assert raw_template == SIMPLE
 
     def test_passing_path_and_params_returns_rendered_template(self):
         template = make_template(PATH_TO_SIMPLE, {})
-        self.assertEqual(template, SIMPLE)
+        assert template == SIMPLE
 
     def test_make_template_renders_complex_template(self):
         template = make_template(PATH_TO_COMPLEX, {'email': 'x@example.com'})
-        self.assertEqual(template, COMPLEX)
+        assert template == COMPLEX
