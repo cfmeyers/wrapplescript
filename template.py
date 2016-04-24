@@ -6,7 +6,7 @@ def get_raw_template(path):
         return f.read()
 
 
-def make_template(path, params):
+def make_template(path, **params):
     raw_template = get_raw_template(path)
-    rendered_template = pystache.render(raw_template, params)
+    rendered_template = pystache.render(raw_template, **params)
     return rendered_template

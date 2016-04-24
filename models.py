@@ -39,8 +39,8 @@ class Person(PClass):
     address = field(maybe(Address))
 
     @classmethod
-    def from_name(cls, name, constructor, **kwargs):
-        email = constructor(name, **kwargs)
+    def from_name(cls, name, email_constructor, **kwargs):
+        email = email_constructor(name, **kwargs)
         return cls(name=name, email=email)
 
 
