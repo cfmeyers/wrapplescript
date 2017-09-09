@@ -1,1 +1,1 @@
-#A very low tech python wrapper for some apple scripts
+#A very low tech python wrapper for some apple scripts 
